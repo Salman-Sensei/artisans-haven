@@ -183,11 +183,9 @@ Save → Copy the **Template ID**
 Dashboard → **"Account"** → Copy your **Public Key**
 
 ### Step 5 — Add Keys to Code
-Open `index.html` → find these lines and paste your keys:
+Open `js/data.js` → edit the `CONFIG.emailjs` block:
 ```javascript
-const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
-const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+emailjs: { publicKey: 'YOUR_PUBLIC_KEY', serviceId: 'YOUR_SERVICE_ID', templateId: 'YOUR_TEMPLATE_ID' }
 ```
 
 ---
@@ -198,7 +196,7 @@ const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
 
 **Step 1** — Create a new GitHub repository named `artisans-haven`
 
-**Step 2** — Upload `index.html` to the repository
+**Step 2** — Upload `index.html` together with the `css/` and `js/` folders
 
 **Step 3** — Go to [vercel.com](https://vercel.com) → Sign up with GitHub
 
@@ -206,7 +204,7 @@ const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
 
 **Step 5** — Click **"Deploy"** — your site goes live in ~30 seconds! 🚀
 
-**Every future update:** Edit `index.html` on GitHub → Vercel auto-redeploys instantly ♻️
+**Every future update:** Edit files on GitHub → Vercel auto-redeploys instantly ♻️
 
 ---
 
@@ -230,35 +228,30 @@ Planned improvements for Artisan's Haven:
 
 ```
 artisans-haven/
-│
-└── index.html          # Complete website — HTML + CSS + JS in one file
-    │
-    ├── CSS Sections
-    │   ├── Variables & Reset
-    │   ├── Custom Cursor
-    │   ├── Header & Navigation
-    │   ├── Hero Section
-    │   ├── Product Grid & Cards
-    │   ├── Cart Panel
-    │   ├── Product Modal
-    │   ├── Reviews Section
-    │   ├── Contact Form
-    │   ├── Newsletter
-    │   └── Footer
-    │
-    └── JavaScript Sections
-        ├── Product Data (12 products)
-        ├── Custom Cursor Logic
-        ├── Hero Canvas Particles
-        ├── Scroll Reveal Observer
-        ├── 3D Card Tilt
-        ├── Cart + localStorage
-        ├── Wishlist
-        ├── Product Filters & Sort
-        ├── Quick View Modal
-        ├── Reviews & Star Picker
-        ├── EmailJS Contact Form
-        └── Toast Notifications
+├── index.html          # Page structure only (semantic HTML, data-action hooks)
+├── css/
+│   └── styles.css      # All styling: tokens, components, utilities, responsive
+├── js/
+│   ├── data.js         # CONFIG (EmailJS ids, timings), PRODUCTS, reviews, nav/category data
+│   └── main.js         # Behaviour: catalogue, cart + localStorage, modal, reviews,
+│                       #            forms/EmailJS, effects, one delegated click handler
+└── tests/
+    ├── harness.js      # Loads the site into jsdom (offline)
+    └── site.test.js    # 51 black-box regression tests
+```
+
+### ♻️ Refactoring (Lab 8)
+The original single 1,500-line `index.html` was split into HTML / CSS / JS and cleaned up with
+Extract Method, Replace Magic Numbers with Constants, Remove Duplication (data-driven markup),
+Replace Inline Handlers with Event Delegation, Lookup Tables instead of if/else chains,
+Encapsulation (IIFE + private state), Safe Rendering (`escapeHTML`) and Dead-Code Removal.
+
+### 🧪 Running the tests
+```bash
+cd tests
+npm init -y && npm i -D vitest jsdom@26
+# add  "type": "module"  to package.json, then:
+npx vitest run
 ```
 
 ---
